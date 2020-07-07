@@ -1,5 +1,7 @@
-def get_letters #Получает загаданное слово
-	slovo = ARGV[0]
+#метод получает загаданное слово и возвращает его 
+#массивом из отдельных букв
+def get_letters 
+	slovo = ARGV[0]#Получает загаданное слово
 
 	if slovo == nil || slovo == ""
 		abort "Вы не ввели слово для игры"
@@ -8,23 +10,52 @@ def get_letters #Получает загаданное слово
 	return slovo.split("")#возвращает массив из букв
 end
 
+#метод для ввода букв
 def get_user_input#получает пользовательский ввод
 	letter = "" #задаем пустую переменную
-
-	while letter == "" do #пока переменная пустая, выводим строку для ввода
+	#пока переменная пустая, выводим строку для ввода
+	while letter == "" do 
 		letter = STDIN.gets.chomp
 	end
+
 	#после ввода метод возвращает букву
 	return letter
 end
 
+#метод проверяет роезультат ввода поль0зователя
+
 def check_result(user_input, letters, good_letters, bad_letters)
+	#если буква пользователя является правильной или неправильной
+	#продолжаем игру
 	if good_letters.include?(user_input) || bad_letters.include?(user_input)
 		return 0
 	end
+	#если введенная буква яляется элементом слова, то добавляем
+	#ее в массив правильных букв
+	if letters.include?("ё") && letters.include?("е") && (user_input == "е")
+		good_letters << user_input
+		user_input = "ё"
+	elsif letters.include?("ё") && letters.include?("е") && (user_input == "ё")
+		good_letters << user_input
+		user_input = "е"
+	elsif letters.include?("и") && letters.include?("й") && (user_input == "и")
+		good_letters << user_input
+		user_input = "й"
+	elsif letters.include?("и") && letters.include?("й") && (user_input == "й")
+		good_letters << user_input
+		user_input = "и"
+	elsif letters.include?("ё") && (user_input == "е")
+		user_input = "ё"
+	elsif letters.include?("е") && (user_input == "ё")
+		user_input = "е"
+	elsif letters.include?("й") && (user_input == "и")
+		user_input = "й"	
+	elsif letters.include?("и") && (user_input == "й")
+		user_input = "и"
+	end
 
 	if letters.include?(user_input)
-		good_letters << user_input
+	good_letters << user_input
 
 		# условие когда отгадано всё слово!
 		if letters.uniq.size == good_letters.size
@@ -32,6 +63,8 @@ def check_result(user_input, letters, good_letters, bad_letters)
 		else
 			return 0
 		end
+	#иначе, добавляем ее в массив неправильных букв и увеличиваем
+	#счетчик ошибок
 	else
 		bad_letters << user_input
 		return -1
@@ -43,6 +76,7 @@ def get_word_for_print(letters, good_letters)
 
 	for letter in letters do
 		if good_letters.include? letter
+			p good_letters
 			result += letter + " "
 		else
 			result += "_ "
