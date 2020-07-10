@@ -9,12 +9,15 @@ password = STDIN.noecho(&:gets).chomp
 puts "Кому отправить письмо?"
 send_to = STDIN.gets.chomp
 
+puts "Введите тему письма"
+theme = STDIN.gets.chomp
+
 puts "Что написать в письме?"
 body = STDIN.gets.chomp
 
 Pony.mail(
 {
-	:subject => "привет из руби!",
+	:subject => theme,
 	:body => body,
 	:to => send_to,
 	:from => my_mail,
